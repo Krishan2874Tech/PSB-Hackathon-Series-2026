@@ -1,0 +1,73 @@
+{
+    "project": {
+      "name": "SecureWealth Twin",
+      "tagline": "AI-Driven Wealth Advisory with Fraud Protection",
+      "version": "1.0.0",
+      "description": "SecureWealth Twin is a comprehensive wealth management platform combining AI-driven financial advisory with enterprise-grade fraud protection. It provides personalized portfolio insights, real-time risk scoring, and mandatory security verification for all critical transactions."
+    },
+    "features": {
+      "ai_advisor": {
+        "personalization": true,
+        "scenario_simulation": true,
+        "explanable_ai": true,
+        "natural_language_qa": true,
+        "goal_tracking": true
+      },
+      "fraud_protection": {
+        "real_time_risk_scoring": true,
+        "device_fingerprinting": true,
+        "behavioral_biometrics": true,
+        "geolocation": true,
+        "velocity_checks": true,
+        "adaptive_authentication": true,
+        "step_up_mfa": true,
+        "human_approval": true,
+        "transaction_throttling": true
+      },
+      "security": {
+        "immutable_audit_logs": true,
+        "transaction_provenance": true,
+        "reason_codes": true,
+        "siem_integration": true,
+        "automated_rollback": true
+      }
+    },
+    "technology_stack": {
+      "frontend": {
+        "framework": "Vanilla JS",
+        "styling": "Tailwind CSS",
+        "icons": "Lucide Icons",
+        "libraries": []
+      },
+      "backend": {
+        "platform": "Google Cloud Platform",
+        "database": "Firestore",
+        "functions": "Cloud Functions",
+        "ai_services": "Vertex AI",
+        "security_services": "Cloud Security Command Center"
+      }
+    },
+    "responsive": {
+      "mobile_first": true,
+      "breakpoints": {
+        "mobile": "480px",
+        "tablet": "768px",
+        "desktop": "1024px",
+        "large": "1280px"
+      }
+    },
+    "accessibility": {
+      "wcag_compliant": true,
+      "keyboard_navigation": true,
+      "screen_reader_support": true
+    },
+    "performance": {
+      "optimized": true,
+      "lazy_loading": true,
+      "analytics": {
+        "users": true,
+        "events": true,
+        "fraud_attempts": true
+      }
+    }
+  }
