@@ -1,0 +1,253 @@
+/* SecureWealth Twin - Additional Custom Styles */
+
+/* Mobile-First Design Enhancements */
+@media (max-width: 768px) {
+    .glass-panel {
+        box-shadow: 0 4px 12px rgba(31, 38, 135, 0.07);
+        border-radius: 0.75rem;
+    }
+    
+    .glass-panel p {
+        font-size: 0.875rem;
+    }
+    
+    .card-shadow {
+        box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* SecureWealth Brand Colors */
+:root {
+    --primary-gradient: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+    --security-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    --danger-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+/* Risk Level Animations */
+.risk-high {
+    animation: riskAlert 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes riskAlert {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+/* Chart Animations */
+.risk-indicator {
+    transition: stroke 0.5s ease-out, stroke-dashoffset 0.5s ease-out;
+}
+
+/* Transition Effects */
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+}
+
+/* Security Scanning Animation */
+.security-scan {
+    position: relative;
+    overflow: hidden;
+}
+
+.security-scan::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+    animation: securityScan 3s infinite;
+}
+
+@keyframes securityScan {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* GlassmorphismEnhanced */
+.glass-panel.enhanced {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(247, 250, 252, 0.95) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(241, 245, 249, 0.6);
+}
+
+/* Mobile Navigation */
+.mobile-nav-item {
+    @apply flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100 transition-colors;
+}
+
+.mobile-nav-item i {
+    @apply w-4 h-4 inline-block mr-2;
+}
+
+/* Animation Utilities */
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Animation for Interactive Elements */
+.click-effect:active {
+    transform: scale(0.95);
+}
+
+/* Responsive Typography */
+@media (max-width: 640px) {
+    .text-3xl { font-size: 2.25rem; }
+    .text-2xl { font-size: 1.875rem; }
+    .text-xl { font-size: 1.5rem; }
+}
+
+/* Progress Bar Animation */
+.progress-bar {
+    animation: progressBar 2s ease-out;
+}
+
+@keyframes progressBar {
+    0% { width: 0%; }
+    100% { width: 94%; }
+}
+
+/* Card Hover Effects */
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.12);
+}
+
+/* Loading Animation */
+.loading-check {
+    animation: loadingCheck 1s infinite alternate;
+}
+
+@keyframes loadingCheck {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+/* Risk Factor Cards */
+.risk-factor {
+    transition: all 0.3s ease;
+}
+
+.risk-factor:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Responsive Charts */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 200px;
+    }
+}
+
+/* Text Gradient Effects */
+.text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* Animation Keyframes */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Mobile Menu Animations */
+#mobile-menu {
+    transition: max-height 0.3s ease-in-out;
+}
+
+#mobile-menu.hidden {
+    max-height: 0;
+    overflow: hidden;
+}
+
+/* Responsive Navigation */
+@media (max-width: 768px) {
+    .mobile-only {
+        display: none !important;
+    }
+}
+
+/* Alert Animations */
+@keyframes pulse-red {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
+}
+
+@keyframes bounce-small {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes slide-up {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-down {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* SecureWealth Alert System */
+.alert-animation {
+    animation: pulseRed 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulseRed {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
+}
+
+/* Responsive Design for Risk Factors */
+@media (max-width: 640px) {
+    .grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Focus States for Accessibility */
+.focus-ring:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+/* Text Selection */
+::selection {
+    background: rgba(59, 130, 246, 0.3);
+    text-shadow: none;
+}
+
+/* Dark Mode Support (Optional) */
+@media (prefers-color-scheme: dark) {
+    .glass-panel {
+        background: rgba(30, 41, 59, 0.9);
+        border: 1px solid rgba(55, 65, 81, 0.3);
+    }
+}

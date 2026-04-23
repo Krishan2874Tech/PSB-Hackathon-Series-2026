@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureWealth Twin - AI Wealth Advisory & Fraud Protection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        security: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'slide-down': 'slideDown 0.5s ease-out',
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'fade-out': 'fadeOut 0.3s ease-out',
+                        'bounce-small': 'bounceSmall 0.3s ease-in-out',
+                        'pulse-red': 'pulseRed 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        slideUp: {
+                            '0%': { transform: 'translateY(100%)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-100%)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        fadeOut: {
+                            '0%': { opacity: '1' },
+                            '100%': { opacity: '0' },
+                        },
+                        bounceSmall: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-5px)' },
+                        },
+                        pulseRed: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '.5' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+            border-radius: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .glass-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.12);
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .search-bar {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+        }
+        .input-shadow {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .risk-low { background-color: #10b981; }
+        .risk-medium { background-color: #f59e0b; }
+        .risk-high { background-color: #ef4444; }
+        .risk-severity-low { background-color: #d1fae5; color: #065f46; }
+        .risk-severity-medium { background-color: #fef3c7; color: #92400e; }
+        .risk-severity-high { background-color: #fee2e2; color: #991b1b; }
+        .ai-gradient {
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+        }
+        .security-gradient {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Navigation Header -->
+    <nav class="sticky top-0 z-50 glass-panel border-b border-blue-100">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                            <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+                        </div>
+                    </div>
+                    <div class="ml-3">
+                        <h1 class="text-xl font-bold text-gray-900">SecureWealth Twin</h1>
+                        <p class="text-xs text-gray-500">AI Wealth + Fraud Protection</p>
+                    </div>
+                </div>
+                
+                <!-- Search Bar - Desktop -->
+                <div class="hidden md:block w-96 mx-4">
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i data-lucide="search" class="h-4 w-4 text-gray-400"></i>
+                        </div>
+                        <input type="text" class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm search-bar" placeholder="Search portfolios, transactions, or ask AI...">
+                    </div>
+                </div>
+                
+                <!-- User Actions -->
+                <div class="flex items-center space-x-4">
+                    <button class="hidden md:flex items-center px-4 py-2 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors">
+                        <i data-lucide="help-circle" class="w-4 h-4 mr-2"></i>
+                        <span>AI Assistant</span>
+                    </button>
+                    
+                    <button class="flex items-center px-4 py-2 rounded-lg bg-white border border-gray-200 hover:bg-gray-50 transition-colors">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-sm font-medium">
+                            JD
+                        </div>
+                        <span class="ml-2 hidden md:block text-sm font-medium">John Doe</span>
+                    </button>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Search -->
+            <div class="md:hidden mt-4">
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i data-lucide="search" class="h-4 w-4 text-gray-400"></i>
+                    </div>
+                    <input type="text" class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm search-bar" placeholder="Search...">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+                    <i data-lucide="pie-chart" class="w-4 h-4 inline-block mr-2"></i>
+                    Dashboard
+                </button>
+                <button class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+                    <i data-lucide="trending-up" class="w-4 h-4 inline-block mr-2"></i>
+                    Portfolio
+                </button>
+                <button class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+                    <i data-lucide="shield" class="w-4 h-4 inline-block mr-2"></i>
+                    Fraud Protection
+                </button>
+                <button class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+                    <i data-lucide="message-circle" class="w-4 h-4 inline-block mr-2"></i>
+                    AI Advisor
+                </button>
+                <button class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+                    <i data-lucide="activity" class="w-4 h-4 inline-block mr-2"></i>
+                    Transactions
+                </button>
+                <button class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+                    <i data-lucide="settings" class="w-4 h-4 inline-block mr-2"></i>
+                    Settings
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Welcome Banner -->
+        <div class="glass-panel p-6 mb-8 border-l-4 border-blue-500">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome back, John! 👋</h2>
+                    <p class="text-gray-600">Your AI-powered wealth protection is active. Current Security Score: <span class="font-semibold text-green-600">94/100</span></p>
+                </div>
+                <div class="mt-4 md:mt-0 flex space-x-3">
+                    <div class="px-3 py-1 bg-blue-50 rounded-lg text-sm font-medium text-blue-700">
+                        <i data-lucide="clock" class="w-4 h-4 inline-block mr-1"></i>
+                        Real-time Protection
+                    </div>
+                    <div class="px-3 py-1 bg-green-50 rounded-lg text-sm font-medium text-green-700">
+                        <i data-lucide="shield-check" class="w-4 h-4 inline-block mr-1"></i>
+                        AI-Activated
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dashboard Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Balance -->
+            <div class="glass-panel p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="bg-blue-50 p-2 rounded-lg">
+                        <i data-lucide="wallet" class="w-6 h-6 text-blue-600"></i>
+                    </div>
+                    <span class="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                        <i data-lucide="trending-up" class="w-3 h-3 inline-block mr-0.5"></i> +2.3% this month
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600 mb-1">Total Portfolio Value</p>
+                <h3 class="text-3xl font-bold text-gray-900">$247,853.42</h3>
+                <div class="mt-4 flex items-center">
+                    <div class="h-1.5 flex-1 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-blue-500 to-purple-500 w-3/4"></div>
+                    </div>
+                    <span class="ml-2 text-xs text-gray-500">10 assets</span>
+                </div>
+            </div>
+            
+            <!-- AI Insights Score -->
+            <div class="glass-panel p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="bg-purple-50 p-2 rounded-lg">
+                        <i data-lucide="brain" class="w-6 h-6 text-purple-600"></i>
+                    </div>
+                    <span class="text-xs font-medium bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
+                        AI-Optimized
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600 mb-1">AI Optimization Score</p>
+                <h3 class="text-3xl font-bold text-gray-900">88/100</h3>
+                <p class="text-sm text-gray-500 mt-2">Your portfolio is 12% under-allocated in technology sectors</p>
+                <button class="mt-3 text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center">
+                    <span>Optimize Now</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                </button>
+            </div>
+            
+            <!-- Fraud Protection -->
+            <div class="glass-panel p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="bg-green-50 p-2 rounded-lg">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-green-600"></i>
+                    </div>
+                    <span class="text-xs font-medium bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                        Active Protection
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600 mb-1">Security Status</p>
+                <h3 class="text-3xl font-bold text-gray-900">Protected</h3>
+                <div class="mt-4 flex items-center">
+                    <div class="flex -space-x-2">
+                        <div class="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center">
+                            <i data-lucide="check" class="w-3 h-3 text-green-600"></i>
+                        </div>
+                        <div class="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center">
+                            <i data-lucide="check" class="w-3 h-3 text-green-600"></i>
+                        </div>
+                        <div class="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center">
+                            <i data-lucide="check" class="w-3 h-3 text-green-600"></i>
+                        </div>
+                    </div>
+                    <span class="ml-2 text-xs text-gray-500">3/3 protections active</span>
+                </div>
+            </div>
+            
+            <!-- AI Advisor Status -->
+            <div class="glass-panel p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="bg-orange-50 p-2 rounded-lg">
+                        <i data-lucide="message-circle" class="w-6 h-6 text-orange-600"></i>
+                    </div>
+                    <span class="text-xs font-medium bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
+                        Ready
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600 mb-1">AI Wealth Advisor</p>
+                <h3 class="text-3xl font-bold text-gray-900">14</h3>
+                <p class="text-sm text-gray-500 mt-2">Questions answered this week</p>
+                <button class="mt-3 text-sm text-orange-600 hover:text-orange-700 font-medium flex items-center">
+                    <span>Ask AI</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- AI Insights & Fraud Protection Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- AI Insights -->
+            <div class="lg:col-span-2 glass-panel p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">AI Wealth Insights</h2>
+                        <p class="text-sm text-gray-500">Personalized recommendations from your AI Advisor</p>
+                    </div>
+                    <button class="p-2 rounded-lg text-gray-400 hover:bg-gray-100">
+                        <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- Insight Card 1 -->
+                    <div class="border border-gray-100 rounded-xl p-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-purple-100 p-2 rounded-lg flex-shrink-0">
+                                <i data-lucide="trending-up" class="w-5 h-5 text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-900">Asset Rebalancing Opportunity</h3>
+                                <p class="text-sm text-gray-600 mt-1">Your equity allocation is currently 72% vs recommended 65%. Consider reducing large-cap exposure and adding bonds.</p>
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-full font-medium">Rebalancing</span>
+                                    <span class="px-2 py-1 bg-green-50 text-green-700 text-xs rounded-full font-medium">Medium Priority</span>
+                                    <span class="px-2 py-1 bg-orange-50 text-orange-700 text-xs rounded-full font-medium">Risk: Low</span>
+                                </div>
+                                <div class="mt-3 flex space-x-2">
+                                    <button class="text-sm text-purple-600 font-medium hover:text-purple-700">Auto-Rebalance</button>
+                                    <button class="text-sm text-gray-500 hover:text-gray-700">Review Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Insight Card 2 -->
+                    <div class="border border-gray-100 rounded-xl p-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-blue-100 p-2 rounded-lg flex-shrink-0">
+                                <i data-lucide="book-open" class="w-5 h-5 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-900">Financial Literacy Tip</h3>
+                                <p class="text-sm text-gray-600 mt-1">Understanding compound interest: $500/month invested at 7% return will grow to ~$340,000 in 15 years.</p>
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full font-medium">Education</span>
+                                    <span class="px-2 py-1 bg-green-50 text-green-700 text-xs rounded-full font-medium">1 min read</span>
+                                </div>
+                                <button class="mt-3 text-sm text-blue-600 font-medium hover:text-blue-700">Read Full Article</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Insight Card 3 -->
+                    <div class="border border-gray-100 rounded-xl p-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-green-100 p-2 rounded-lg flex-shrink-0">
+                                <i data-lucide="calendar" class="w-5 h-5 text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-900">Quarterly Review Scheduled</h3>
+                                <p class="text-sm text-gray-600 mt-1">Your next AI portfolio review is scheduled for June 15. Review your current goals and make adjustments if needed.</p>
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                    <span class="px-2 py-1 bg-green-50 text-green-700 text-xs rounded-full font-medium">Scheduled</span>
+                                    <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">June 15</span>
+                                </div>
+                                <button class="mt-3 text-sm text-green-600 font-medium hover:text-green-700">Schedule Review</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fraud Protection Dashboard -->
+            <div class="glass-panel p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">Fraud Protection</h2>
+                        <p class="text-sm text-gray-500">Real-time security & risk assessment</p>
+                    </div>
+                    <button class="p-2 rounded-lg text-gray-400 hover:bg-gray-100">
+                        <i data-lucide="activity" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                
+                <!-- Security Score -->
+                <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl p-6 text-white mb-6">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
+                        <h3 class="font-bold text-lg">Security Health Score</h3>
+                    </div>
+                    <div class="flex items-end space-x-3">
+                        <span class="text-5xl font-bold">94</span>
+                        <span class="text-xl mb-2">/100</span>
+                    </div>
+                    <div class="mt-4">
+                        <div class="h-3 w-full bg-white/20 rounded-full overflow-hidden">
+                            <div class="h-full bg-white/90 rounded-full w-[94%]"></div>
+                        </div>
+                        <p class="text-sm mt-2">Excellent protection with 2FA andbiometric verification active</p>
+                    </div>
+                </div>
+                
+                <!-- Active Protections -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-green-50">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center mr-3">
+                                <i data-lucide="lock" class="w-4 h-4 text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Fraud Detection</p>
+                                <p class="text-xs text-green-600">Active · 24/7 Monitoring</p>
+                            </div>
+                        </div>
+                        <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-green-50">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center mr-3">
+                                <i data-lucide="smartphone" class="w-4 h-4 text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Device Fingerprinting</p>
+                                <p class="text-xs text-green-600">Active · 1 registered device</p>
+                            </div>
+                        </div>
+                        <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-green-50">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center mr-3">
+                                <i data-lucide="globe" class="w-4 h-4 text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Geolocation Check</p>
+                                <p class="text-xs text-green-600">Active · Mumbai, IN profile</p>
+                            </div>
+                        </div>
+                        <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-orange-50">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center mr-3">
+                                <i data-lucide="clock" class="w-4 h-4 text-orange-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Velocity Checks</p>
+                                <p class="text-xs text-orange-600">Monitoring · Low activity</p>
+                            </div>
+                        </div>
+                        <div class="w-3 h-3 bg-orange-500 rounded-full animate-pulse"></div>
+                    </div>
+                </div>
+                
+                <!-- Risk Score Circle -->
+                <div class="mt-6 bg-gray-50 rounded-xl p-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-sm font-medium text-gray-900">Risk Assessment</h3>
+                        <span class="text-xs font-semibold text-gray-500">Last updated: Just now</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="relative w-24 h-24 rounded-full border-[6px] border-green-500 flex items-center justify-center">
+                            <div class="absolute inset-0 rounded-full border-[6px] border-transparent border-t-blue-500 border-r-blue-500 transform -rotate-45" style="border-width: 6px; transform: rotate(-45deg);"></div>
+                            <div class="absolute w-full h-full rounded-full border-[6px] border-transparent border-b-green-500 border-l-green-500 transform rotate-45" style="border-width: 6px; transform: rotate(45deg);"></div>
+                            <div class="flex flex-col items-center">
+                                <span class="text-xl font-bold text-green-600">LOW</span>
+                                <span class="text-xs text-gray-500">Risk Level</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Threat Score</span>
+                            <span class="font-medium text-gray-900">8/100</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Anomaly Detection</span>
+                            <span class="font-medium text-green-600">No anomalies</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Behavioral Biometrics</span>
+                            <span class="font-medium text-green-600">Consistent patterns</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AI Wealth Advisor Chat Section -->
+        <div class="glass-panel p-6 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900">AI Wealth Advisor</h2>
+                    <p class="text-sm text-gray-500">Ask anything about your portfolio, financial goals, or market insights</p>
+                </div>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center">
+                    <i data-lucide="send" class="w-4 h-4 mr-2"></i>
+                    Ask AI
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Chat History -->
+                <div class="md:col-span-2">
+                    <div class="bg-gray-50 rounded-xl p-4 h-80 overflow-y-auto">
+                        <!-- User Message -->
+                        <div class="flex justify-end mb-4">
+                            <div class="bg-blue-500 text-white px-4 py-2 rounded-2xl rounded-tr-none inline max-w-[80%]">
+                                What's my current allocation in technology stocks?
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-start mb-4">
+                            <div class="bg-white border border-gray-200 px-4 py-2 rounded-2xl rounded-tl-none max-w-[85%]">
+                                <div class="flex items-center mb-2">
+                                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs mr-2">
+                                        AI
+                                    </div>
+                                    <span class="text-sm font-medium">AI Wealth Advisor</span>
+                                </div>
+                                <p class="text-gray-700">Your technology allocation is currently 18% of your portfolio, which is below the recommended 25-30% for your investment horizon.</p>
+                                <div class="mt-3 bg-white border border-gray-200 rounded-lg p-3">
+                                    <h4 class="font-medium text-sm mb-2">AI Recommendation:</h4>
+                                    <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                        <li>Consider adding tech sector exposure for growth</li>
+                                        <li>Recommended allocation: 25%</li>
+                                        <li>Potential impact: +0.7% annual returns projected</li>
+                                    </ul>
+                                </div>
+                                <div class="mt-2 text-xs text-gray-500">Based on your risk profile and market analysis</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-start mb-4">
+                            <div class="bg-white border border-gray-200 px-4 py-2 rounded-2xl rounded-tl-none max-w-[85%]">
+                                <div class="flex items-center mb-2">
+                                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-xs mr-2">
+                                        AI
+                                    </div>
+                                    <span class="text-sm font-medium">AI Wealth Advisor</span>
+                                </div>
+                                <p class="text-gray-700">Would you like me to suggest specific technology stocks for your portfolio? I can analyze current market trends and recommend opportunities that align with your risk tolerance.</p>
+                                <div class="mt-3 flex space-x-2">
+                                    <button class="px-3 py-1 bg-blue-50 text-blue-600 text-xs rounded-full hover:bg-blue-100">Yes, show suggestions</button>
+                                    <button class="px-3 py-1 bg-gray-50 text-gray-600 text-xs rounded-full hover:bg-gray-100">Maybe later</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Input Area -->
+                    <div class="mt-4">
+                        <div class="relative">
+                            <textarea class="block w-full pl-4 pr-14 py-3 rounded-xl border border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm text-sm resize-none h-20" placeholder="Ask about your portfolio, financial goals, or market insights..."></textarea>
+                            <div class="absolute bottom-3 right-3">
+                                <button class="p-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600">
+                                    <i data-lucide="send" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="bg-gray-50 rounded-xl p-4">
+                    <h3 class="font-medium text-gray-900 mb-4">Quick AI Actions</h3>
+                    <div class="space-y-3">
+                        <button class="w-full p-3 rounded-lg bg-white border border-gray-200 text-left hover:border-blue-300 hover:shadow-sm transition-all">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center mr-3">
+                                    <i data-lucide="calendar" class="w-4 h-4 text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Review Goals</p>
+                                    <p class="text-xs text-gray-500">Check progress on financial goals</p>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full p-3 rounded-lg bg-white border border-gray-200 text-left hover:border-green-300 hover:shadow-sm transition-all">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center mr-3">
+                                    <i data-lucide="refresh-cw" class="w-4 h-4 text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Rebalance</p>
+                                    <p class="text-xs text-gray-500">Optimize your portfolio allocation</p>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full p-3 rounded-lg bg-white border border-gray-200 text-left hover:border-blue-300 hover:shadow-sm transition-all">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center mr-3">
+                                    <i data-lucide="file-text" class="w-4 h-4 text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Tax Strategy</p>
+                                    <p class="text-xs text-gray-500">Minimize tax liability</p>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full p-3 rounded-lg bg-white border border-gray-200 text-left hover:border-purple-300 hover:shadow-sm transition-all">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center mr-3">
+                                    <i data-lucide="trending-up" class="w-4 h-4 text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Market Analysis</p>
+                                    <p class="text-xs text-gray-500">Current market insights</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Critical Transactions & Fraud Protection -->
+        <div class="glass-panel p-6 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900">Critical Transactions</h2>
+                    <p class="text-sm text-gray-500">Real-time risk assessment & fraud protection for all actions</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-gray-200">
+                        <i data-lucide="filter" class="w-4 h-4 mr-1.5 inline-block"></i> Filter
+                    </button>
+                    <button class="px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded-lg hover:bg-gray-200">
+                        <i data-lucide="download" class="w-4 h-4 mr-1.5 inline-block"></i> Export
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Risk Scoring Demo -->
+            <div class="bg-gradient-to-r from-red-50 to-orange-50 border border-red-100 rounded-xl p-5 mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center mr-3">
+                            <i data-lucide="alert-triangle" class="w-6 h-6 text-red-600 animate-bounce-small"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">High-Risk Transaction Detected!</h3>
+                            <p class="text-sm text-gray-600">Large wire transfer request requires verification</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="flex items-center justify-end">
+                            <span class="px-3 py-1 bg-red-100 text-red-700 font-bold rounded-lg text-sm">HIGH RISK</span>
+                        </div>
+                        <div class="text-xs text-red-600 mt-1">Action requires step-up authentication</div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center mr-3">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-red-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 mb-1">Geolocation</p>
+                                <p class="font-medium text-gray-900">Mismatch</p>
+                                <p class="text-sm text-gray-600">Request from Mumbai vs. subscriber profile (New York)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center mr-3">
+                                <i data-lucide="clock" class="w-4 h-4 text-orange-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 mb-1">Velocity Check</p>
+                                <p class="font-medium text-gray-900">High Frequency</p>
+                                <p class="text-sm text-gray-600">3 large transfers in last 60 minutes</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center mr-3">
+                                <i data-lucide="cpu" class="w-4 h-4 text-red-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 mb-1">Risk Score</p>
+                                <p class="font-medium text-gray-900">87/100</p>
+                                <p class="text-sm text-gray-600">Multiple risk factors detected</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-white rounded-lg p-4 border border-gray-200">
+                    <div class="flex items-start mb-3">
+                        <div class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center mr-3 flex-shrink-0">
+                            <i data-lucide="shield-alert" class="w-4 h-4 text-purple-600"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-900">Action Required: Step-up Authentication</p>
+                            <p class="text-sm text-gray-600 mt-1">This transaction has been flagged for additional verification. You'll need to complete step-up MFA to proceed.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-3 mt-4">
+                        <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center">
+                            <i data-lucide="alert-circle" class="w-4 h-4 mr-2"></i>
+                            Cancel Transaction
+                        </button>
+                        <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center">
+                            <i data-lucide="key" class="w-4 h-4 mr-2"></i>
+                            Complete Verification
+                        </button>
+                        <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 flex items-center">
+                            <i data-lucide="accessibility" class="w-4 h-4 mr-2"></i>
+                            Request Human Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Transaction Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Transaction</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Date</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Type</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Amount</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Risk Level</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Status</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-600">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <!-- Transaction 1 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4">
+                                <div class="font-medium text-gray-900">Wire Transfer</div>
+                                <div class="text-xs text-gray-500">To: Global Investments Ltd</div>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">
+                                <div class="flex items-center">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5 mr-1 text-gray-400"></i>
+                                    Today, 10:23 AM
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-full font-medium">Transfer</span>
+                            </td>
+                            <td class="py-3 px-4 font-medium text-gray-900">$24,500.00</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="flex -space-x-1">
+                                        <div class="w-2 h-2 bg-red-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-red-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-yellow-400 rounded-full mr-2 animate-pulse"></div>
+                                    <span class="text-sm font-medium text-yellow-700">Under Review</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800">
+                                        <i data-lucide="check" class="w-4 h-4"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-800">
+                                        <i data-lucide="x" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Transaction 2 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4">
+                                <div class="font-medium text-gray-900">Mutual Fund Purchase</div>
+                                <div class="text-xs text-gray-500">Fund: Growth Portfolio X</div>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">
+                                <div class="flex items-center">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5 mr-1 text-gray-400"></i>
+                                    Yesterday, 3:45 PM
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-green-50 text-green-700 text-xs rounded-full font-medium">Investment</span>
+                            </td>
+                            <td class="py-3 px-4 font-medium text-gray-900">$5,000.00</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="flex -space-x-1">
+                                        <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-green-300 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-green-200 rounded-full"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                    <span class="text-sm font-medium text-green-700">Approved</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <button class="text-blue-600 hover:text-blue-800">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Transaction 3 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4">
+                                <div class="font-medium text-gray-900">Bill Payment</div>
+                                <div class="text-xs text-gray-500">To: Electricity Company</div>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">
+                                <div class="flex items-center">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5 mr-1 text-gray-400"></i>
+                                    Jun 10, 9:15 AM
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full font-medium">Payment</span>
+                            </td>
+                            <td class="py-3 px-4 font-medium text-gray-900">$125.00</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="flex -space-x-1">
+                                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-green-300 rounded-full"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                    <span class="text-sm font-medium text-green-700">Approved</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <button class="text-blue-600 hover:text-blue-800">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Transaction 4 -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4">
+                                <div class="font-medium text-gray-900">Large Trade</div>
+                                <div class="text-xs text-gray-500">Tech Stock Purchase</div>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">
+                                <div class="flex items-center">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5 mr-1 text-gray-400"></i>
+                                    Jun 9, 2:30 PM
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-full font-medium">Trade</span>
+                            </td>
+                            <td class="py-3 px-4 font-medium text-gray-900">$15,200.00</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="flex -space-x-1">
+                                        <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-green-300 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                    <span class="text-sm font-medium text-green-700">Approved</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Portfolio Distribution & Risk Analysis -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Portfolio Distribution -->
+            <div class="glass-panel p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">Portfolio Distribution</h2>
+                        <p class="text-sm text-gray-500">Asset allocation by category</p>
+                    </div>
+                    <button class="p-2 rounded-lg text-gray-400 hover:bg-gray-100">
+                        <i data-lucide="info" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                
+                <!-- Custom Chart -->
+                <div class="flex items-center justify-center mb-6">
+                    <div class="relative w-64 h-64">
+                        <svg viewBox="0 0 100 100" class="w-full h-full transform -rotate-90">
+                            <!-- Background Circle -->
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#f3f4f6" stroke-width="15" />
+                            
+                            <!-- Equity Slice -->
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#6366f1" stroke-width="15" 
+                                    stroke-dasharray="150.8" stroke-dashoffset="150.8" stroke-linecap="round" />
+                            
+                            <!-- Bond Slice -->
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#10b981" stroke-width="15" 
+                                    stroke-dasharray="100.5" stroke-dashoffset="100.5" stroke-linecap="round" />
+                            
+                            <!-- Cash Slice -->
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#f59e0b" stroke-width="15" 
+                                    stroke-dasharray="50.3" stroke-dashoffset="50.3" stroke-linecap="round" />
+                            
+                            <!-- Alternative Slice -->
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#ec4899" stroke-width="15" 
+                                    stroke-dasharray="25.1" stroke-dashoffset="0" stroke-linecap="round" />
+                        </svg>
+                        
+                        <!-- Center Text -->
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-3xl font-bold text-gray-900">100%</span>
+                            <span class="text-sm text-gray-500">Total</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Legend -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-indigo-500 mr-2"></div>
+                            <span class="text-sm font-medium text-gray-700">Equities</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">65%</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                            <span class="text-sm font-medium text-gray-700">Bonds</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">20%</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-amber-500 mr-2"></div>
+                            <span class="text-sm font-medium text-gray-700">Cash</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">10%</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-pink-500 mr-2"></div>
+                            <span class="text-sm font-medium text-gray-700">Alternatives</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">5%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="glass-panel p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">Recent Activity</h2>
+                        <p class="text-sm text-gray-500">Your portfolio actions</p>
+                    </div>
+                    <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                        View All Activity
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                            <i data-lucide="trending-up" class="w-4 h-4 text-blue-600"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Rebalanced Portfolio</p>
+                            <p class="text-xs text-gray-500">Adjustments made to target allocation</p>
+                            <p class="text-xs text-gray-400 mt-1">3 hours ago</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-1">
+                            <i data-lucide="dollar-sign" class="w-4 h-4 text-green-600"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">New Investment</p>
+                            <p class="text-xs text-gray-500">contributed $2,500 to Growth Fund</p>
+                            <p class="text-xs text-gray-400 mt-1">Yesterday</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 mt-1">
+                            <i data-lucide="file-text" class="w-4 h-4 text-purple-600"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Tax documents</p>
+                            <p class="text-xs text-gray-500">2024 statements available for download</p>
+                            <p class="text-xs text-gray-400 mt-1">2 days ago</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-1">
+                            <i data-lucide="shield" class="w-4 h-4 text-orange-600"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Security Update</p>
+                            <p class="text-xs text-gray-500">2FA enabled on new device</p>
+                            <p class="text-xs text-gray-400 mt-1">3 days ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fraud Protection Tips -->
+            <div class="glass-panel p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">Security Tips</h2>
+                        <p class="text-sm text-gray-500">Keep your account safe</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 border border-blue-100">
+                        <h3 class="font-medium text-gray-900 mb-2">Two-Factor Authentication</h3>
+                        <p class="text-sm text-gray-600 mb-3">Enabled on all devices</p>
+                        <button class="text-xs text-blue-600 font-medium hover:text-blue-700">Manage 2FA Devices</button>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border border-green-100">
+                        <h3 class="font-medium text-gray-900 mb-2">Geolocation Alert</h3>
+                        <p class="text-sm text-gray-600 mb-3">Only Mumbai region is approved for transactions</p>
+                        <button class="text-xs text-green-600 font-medium hover:text-green-700">Edit Locations</button>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-4 border border-orange-100">
+                        <h3 class="font-medium text-gray-900 mb-2">Biometric Lock</h3>
+                        <p class="text-sm text-gray-600 mb-3">Face ID/Fingerprint active for transfers</p>
+                        <button class="text-xs text-orange-600 font-medium hover:text-orange-700">Configure</button>
+                    </div>
+                    
+                    <div class="mt-6 bg-gray-50 rounded-xl p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">Risk Score</span>
+                            <span class="text-sm font-bold text-green-600">94/100</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full" style="width: 94%"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Excellent security posture. No immediate actions needed.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AI Scenario Simulation -->
+        <div class="glass-panel p-6 mt-8">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900">AI Scenario Simulation</h2>
+                    <p class="text-sm text-gray-500">What-if analysis for your financial goals</p>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl p-6 text-white mb-6">
+                <div class="flex items-center justify-between">
+                    <div class="max-w-lg">
+                        <h3 class="text-lg font-bold mb-2">Retirement Projection Update</h3>
+                        <p class="text-sm opacity-90">Based on current allocation and projected returns</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-3xl font-bold">$1.2M+</div>
+                        <div class="text-sm opacity-80">Projected ROI in 20 years</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                            <i data-lucide="cake" class="w-5 h-5 text-green-600"></i>
+                        </div>
+                        <h3 class="font-medium text-gray-900">Early Retirement at 55</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">Projections if you reduce annual contributions by 10%:</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Projected Savings</span>
+                            <span class="font-medium text-gray-900">$870,000</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Withdrawal Rate</span>
+                            <span class="font-medium text-gray-900">3.8%</span>
+                        </div>
+                        <div class="flex items-center mt-3">
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Feasible</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                            <i data-lucide="home" class="w-5 h-5 text-blue-600"></i>
+                        </div>
+                        <h3 class="font-medium text-gray-900">Home Purchase 2026</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">Show impact of $15,000 down payment:</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Remaining Savings</span>
+                            <span class="font-medium text-gray-900">$420,000</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Mortgage Affordability</span>
+                            <span class="font-medium text-gray-900">$520,000</span>
+                        </div>
+                        <div class="flex items-center mt-3">
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Optimal</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                            <i data-lucide="book-open" class="w-5 h-5 text-purple-600"></i>
+                        </div>
+                        <h3 class="font-medium text-gray-900">Education Fund</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">College savings for 2 children:</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Current Savings</span>
+                            <span class="font-medium text-gray-900">$85,000</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Projected Need</span>
+                            <span class="font-medium text-gray-900">$120,000</span>
+                        </div>
+                        <div class="flex items-center mt-3">
+                            <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">Needs Adjustment</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FAQ & Help Center -->
+        <div class="glass-panel p-6 mt-8">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900">Help & Support</h2>
+                    <p class="text-sm text-gray-500">Common questions about AI advisory & fraud protection</p>
+                </div>
+                <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                    Contact Security Team
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-100">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-3">
+                        <i data-lucide="brain" class="w-5 h-5 text-blue-600"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-900 mb-2">How does AI advisor work?</h3>
+                    <p class="text-sm text-gray-600">Our AI analyzes your portfolio, financial goals, and risk tolerance to provide personalized recommendations.</p>
+                    <button class="mt-3 text-xs font-medium text-blue-600 hover:text-blue-700">Learn More →</button>
+                </div>
+                
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-5 border border-green-100">
+                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mb-3">
+                        <i data-lucide="shield" class="w-5 h-5 text-green-600"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-900 mb-2">How is fraud detected?</h3>
+                    <p class="text-sm text-gray-600">We use AI-driven anomaly detection combining device fingerprinting, behavioral biometrics, and real-time risk scoring.</p>
+                    <button class="mt-3 text-xs font-medium text-green-600 hover:text-green-700">Learn More →</button>
+                </div>
+                
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-5 border border-purple-100">
+                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mb-3">
+                        <i data-lucide="eye" class="w-5 h-5 text-purple-600"></i>
+                    </div>
+                    <h3 class="font-medium text-gray-900 mb-2">Can I trust AI recommendations?</h3>
+                    <p class="text-sm text-gray-600">All recommendations are explainable, auditable, and include risk scores. You always have final approval.</p>
+                    <button class="mt-3 text-xs font-medium text-purple-600 hover:text-purple-700">Learn More →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                            <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <span class="ml-2 font-bold text-gray-900">SecureWealth Twin</span>
+                    </div>
+                    <p class="text-sm text-gray-500">
+                        AI-powered wealth advisory with enterprise-grade fraud protection for digital banking security.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-4">Platform</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="hover:text-blue-600 cursor-pointer">AI Wealth Advisor</li>
+                        <li class="hover:text-blue-600 cursor-pointer">Fraud Protection</li>
+                        <li class="hover:text-blue-600 cursor-pointer">Portfolio Analytics</li>
+                        <li class="hover:text-blue-600 cursor-pointer">Risk Scoring</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-4">Security</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="hover:text-blue-600 cursor-pointer">Security Overview</li>
+                        <li class="hover:text-blue-600 cursor-pointer">2FA Settings</li>
+                        <li class="hover:text-blue-600 cursor-pointer">Device Management</li>
+                        <li class="hover:text-blue-600 cursor-pointer">Fraud Alerts</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-4">Support</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="hover:text-blue-600 cursor-pointer">Help Center</li>
+                        <li class="hover:text-blue-600 cursor-pointer">Contact Support</li>
+                        <li class="hover:text-blue-600 cursor-pointer">Security Report</li>
+                        <li class="hover:text-blue-600 cursor-pointer">API Documentation</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-gray-500">
+                    © 2024 SecureWealth Twin. All rights reserved.
+                </p>
+                <p class="text-sm text-gray-400 mt-2 md:mt-0">
+                    Powered by Google Cloud AI & Advanced Fraud Protection Systems
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Floating AI Assistant Button -->
+    <button class="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full shadow-lg flex items-center justify-center text-white hover:scale-110 transition-transform z-50">
+        <i data-lucide="message-circle" class="w-6 h-6"></i>
+    </button>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+        
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Auto-expand textarea
+        const textarea = document.querySelector('textarea');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+        
+        // Interactive Chart Simulation
+        const chartCircle = document.querySelector('.chart-circle');
+        
+        // Simulate an alert notification
+        setTimeout(() => {
+            // Add alert animation
+            const alertElement = document.querySelector('.alert-animation');
+            if (alertElement) {
+                alertElement.classList.add('animate-bounce-small');
+            }
+        }, 1500);
+        
+        // Add click handlers to alert buttons
+        const alertButtons = document.querySelectorAll('.risk-action-btn');
+        alertButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Show confirmation or action panel
+                const actionType = this.dataset.action;
+                console.log('Action requested:', actionType);
+                
+                // In a real app, this would show a modal or redirect
+                // For demo, just log the action
+                alert(`Action triggered: ${actionType}`);
+            });
+        });
+        
+        // Risk Level Indicators Logic
+        const riskIndicators = document.querySelectorAll('.risk-indicator');
+        
+        // Initialize risk demo
+        riskIndicators.forEach(indicator => {
+            indicator.addEventListener('click', function() {
+                // Toggle between risk levels for demo
+                this.classList.toggle('animate-pulse-red');
+            });
+        });
+    </script>
+<script src="https://deepsite.hf.co/deepsite-badge.js"></script>
+</body>
+</html>
