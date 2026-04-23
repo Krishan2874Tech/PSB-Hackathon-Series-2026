@@ -34,6 +34,9 @@ Fraud Protection (mandatory): real‑time risk scoring, device fingerprint basic
 Explainability & Audit: immutable audit entries, reason codes, customer-facing risk messages
 Monitoring hooks, SIEM-friendly logs, demo incident runbook
 Demo mode with synthetic users for hackathon presentation
+
+<img width="1024" height="513" alt="image" src="https://github.com/user-attachments/assets/4e804500-54d3-4e1d-a4ad-347ff0fe26d2" />
+
 Tech stack
 
 Backend: Python, FastAPI, Uvicorn, SQLAlchemy, Alembic, Celery (optional), Redis (optional)
@@ -44,4 +47,4 @@ Serverless/Cloud: Cloud Functions (business logic), Cloud Run (AI microservice),
 LLM: microservice pattern calling instruction‑tuned LLM (OpenAI or other) with embeddings for profile + history
 Observability: Stackdriver / Cloud Logging (GCP), optional SIEM integration
 Secrets: Google Secret Manager (production); local uses .env (never commit)
-CI/CD: Cloud Build (sample cloudbuild.yaml) + GitHub Actions examples
+CI/CD: Cloud Build (sample cloudbuild.yaml) + GitHub Actions.
