@@ -33,6 +33,7 @@ Personalized wealth advisor: goals, allocations, rebalancing suggestions, scenar
 Fraud Protection (mandatory): real‑time risk scoring, device fingerprint basics, velocity checks, step‑up auth, human approval / cooling period, transaction throttling
 Explainability & Audit: immutable audit entries, reason codes, customer-facing risk messages
 Monitoring hooks, SIEM-friendly logs, demo incident runbook
+https://ai-wealth-shield.preview.emergentagent.com/dashboard
 Demo mode with synthetic users for hackathon presentation
 
 <img width="1024" height="513" alt="image" src="https://github.com/user-attachments/assets/4e804500-54d3-4e1d-a4ad-347ff0fe26d2" />
